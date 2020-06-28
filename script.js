@@ -8,9 +8,12 @@ const container = document.getElementById("container");
 const buttonContainer = document.getElementById("button-container");
 
 function toggleColorButton(e){
+    if(e.target.tagName != 'BUTTON') return;
+
     if(e.target.textContent === "Color"){
         e.target.textContent = "Black";
     }
+    
     else{
         e.target.textContent = "Color";
     }
