@@ -16,7 +16,7 @@ Array.from(buttonContainer.children).forEach((item) => item.style.cssText = "pad
 
 /*******************************
  * Initializing Event Listener *
- ******************************/
+ *****************************/
 container.addEventListener('mouseover',fillColor);
 
 buttonContainer.addEventListener('click',(e) => {
@@ -57,9 +57,10 @@ function getRandomColor(){
 
 function fillColor(e){
     let color = "black";
+    let btn = document.getElementById('color');
 
     if(e.target.className !== "grid-box") return;
-    if(btn.textContent !== "Black")
+    if(btn.textContent != "Black")
         color = getRandomColor();
     
     e.target.style.cssText += `; background: ${color}`;
