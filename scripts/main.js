@@ -1,5 +1,6 @@
 //Gloabl Variable
 let sizeOfSquare = 12;
+const COLOR_BLACK = 'rgb(0,0,0)';
 
 //Selecting DOMNodes
 const body = document.querySelector("body");
@@ -16,19 +17,20 @@ Array.from(buttonContainer.children).forEach((item) => item.style.cssText = "pad
 
 /*******************************
  * Initializing Event Listener *
- *****************************/
+ *******************************/
 container.addEventListener('mouseover',fillColor);
-
-buttonContainer.addEventListener('click',(e) => {
-    if(e.target.id === "reset"){
+buttonContainer.addEventListener('click',activateButtons);
+    
+function activateButtons(e){
+    if(e.target.id.includes('reset-btn')){
         showPopup(); 
-        deleteContainerChild();
+        resetGrid();
         createGrid();
-    }else{
+    }
+    else{
         toggleColorButton(e);
     }
-});
-
+}
 
 function toggleColorButton(e){
     if(e.target.tagName !== 'BUTTON') return;
@@ -42,9 +44,12 @@ function toggleColorButton(e){
 }
 
 function showPopup(){
-    let input = prompt("Enter the size of square (B/w 4 to 64)");
-    if(isNaN(Number(input))){
+    let input = Number(prompt("Enter the size of square","Between 1 to 64"));
+    if(Number.isNaN(input)){
         alert("Please enter a number");
+        showPopup();
+    }
+    else if(input < 1 || input > 64){
         showPopup();
     }
     sizeOfSquare = Number(input);
@@ -56,17 +61,25 @@ function getRandomColor(){
 }
 
 function fillColor(e){
-    let color = "black";
-    let btn = document.getElementById('color');
-
-    if(e.target.className !== "grid-box") return;
-    if(btn.textContent != "Black")
-        color = getRandomColor();
-    
-    e.target.style.cssText += `; background: ${color}`;
+    let btn = document.getElementById('color-btn');
+    if(btn.textContent.includes('Black'))
+        fillBlackColor(e);
+    else
+        fillRandomColor(e);        
 }
 
-function deleteContainerChild(){
+function fillBlackColor(e){
+    if(e.target.className.includes('grid-box'))
+        e.target.style.backgroundColor = COLOR_BLACK;
+}
+
+function fillRandomColor(e){
+    const COLOR_RANDOM = getRandomColor();
+    if(e.target.className.includes('grid-box'))
+        e.target.style.backgroundColor = COLOR_RANDOM; 
+}
+
+function resetGrid(){
     while(container.firstChild){
         container.removeChild(container.firstChild);
     }
@@ -84,4 +97,3 @@ function createGrid(){
 }
 
 window.onload = () => createGrid();
-
